@@ -24,7 +24,8 @@ const LoginForm = () => {
     setPassword("");
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e) => {
+    e.preventDefault();
     setIsOpenModalSignIn(false);
     setName("");
     setPassword("");

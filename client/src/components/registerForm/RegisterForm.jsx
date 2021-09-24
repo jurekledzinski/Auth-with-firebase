@@ -5,11 +5,15 @@ import "./RegisterForm.scss";
 import { StoreContext } from "../../store/Store";
 import Modal from "../modal/Modal";
 
+import { auth, db } from "../../firebase/ConfigFirebase";
+
 const RegisterForm = () => {
   const { isOpenModalSignUp, setIsOpenModalSignUp } = useContext(StoreContext);
-
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
+  console.log(auth);
+  console.log(db);
 
   const handleSubmitFormLogin = (e) => {
     e.preventDefault();
@@ -25,7 +29,8 @@ const RegisterForm = () => {
     setPassword("");
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e) => {
+    e.preventDefault();
     setIsOpenModalSignUp(false);
     setName("");
     setPassword("");
