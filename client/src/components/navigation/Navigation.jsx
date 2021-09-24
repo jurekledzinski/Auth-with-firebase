@@ -4,9 +4,15 @@ import "./Navigation.scss";
 
 const Navigation = () => {
   return (
-    <nav className="nav">
-      <ul className="nav__menu"></ul>
-    </nav>
+    <header className="header">
+      <nav className="header__nav">
+        <ul className="header__nav-menu">
+          <li className="header__nav__link">Home</li>
+          <li className="header__nav__link">Sign in</li>
+          <li className="header__nav__link">Sign up</li>
+        </ul>
+      </nav>
+    </header>
   );
 };
 
