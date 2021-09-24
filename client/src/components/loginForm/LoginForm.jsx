@@ -7,27 +7,27 @@ import Modal from "../modal/Modal";
 
 const LoginForm = () => {
   const { isOpenModalSignIn, setIsOpenModalSignIn } = useContext(StoreContext);
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmitFormLogin = (e) => {
     e.preventDefault();
-    if (!name || !password) return;
+    if (!email || !password) return;
 
     const dataLogin = {
-      name,
+      email,
       password,
     };
 
     console.log("Data login ", dataLogin);
-    setName("");
+    setEmail("");
     setPassword("");
   };
 
   const handleCloseModal = (e) => {
     e.preventDefault();
     setIsOpenModalSignIn(false);
-    setName("");
+    setEmail("");
     setPassword("");
   };
 
@@ -41,8 +41,8 @@ const LoginForm = () => {
             <input
               type="text"
               className="login__input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="login__wrapper-input">

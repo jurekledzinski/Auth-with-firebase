@@ -5,34 +5,51 @@ import "./RegisterForm.scss";
 import { StoreContext } from "../../store/Store";
 import Modal from "../modal/Modal";
 
-import { auth, db } from "../../firebase/ConfigFirebase";
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  db,
+} from "../../firebase/ConfigFirebase";
 
 const RegisterForm = () => {
   const { isOpenModalSignUp, setIsOpenModalSignUp } = useContext(StoreContext);
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   console.log(auth);
   console.log(db);
 
-  const handleSubmitFormLogin = (e) => {
+  const handleSubmitFormRegister = (e) => {
     e.preventDefault();
-    if (!name || !password) return;
+    if (!email || !password) return;
 
     const dataRegister = {
-      name,
+      email,
       password,
     };
 
-    console.log("Data register ", dataRegister);
-    setName("");
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(userCredential);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(error);
+        // ..
+      });
+
+    setEmail("");
     setPassword("");
   };
 
   const handleCloseModal = (e) => {
     e.preventDefault();
     setIsOpenModalSignUp(false);
-    setName("");
+    setEmail("");
     setPassword("");
   };
 
@@ -40,14 +57,14 @@ const RegisterForm = () => {
     <Modal isOpenModal={isOpenModalSignUp}>
       <div className="register">
         <h2 className="register__title">Sing Up</h2>
-        <form className="register__form" onSubmit={handleSubmitFormLogin}>
+        <form className="register__form" onSubmit={handleSubmitFormRegister}>
           <div className="register__wrapper-input">
-            <label className="register__label">Name:</label>
+            <label className="register__label">Email:</label>
             <input
               type="text"
               className="register__input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="register__wrapper-input">
