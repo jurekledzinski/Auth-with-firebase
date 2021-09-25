@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import "./Navigation.scss";
 
 import { StoreContext } from "../../store/Store";
+
+import { auth, signOut } from "../../firebase/ConfigFirebase";
 
 const Navigation = () => {
   const {
@@ -11,12 +13,23 @@ const Navigation = () => {
     isOpenModalSignUp,
     setIsOpenModalSignUp,
   } = useContext(StoreContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignIn = () => {
     if (!isOpenModalSignUp) setIsOpenModalSignIn(true);
   };
   const handleSignUp = () => {
     if (!isOpenModalSignIn) setIsOpenModalSignUp(true);
+  };
+
+  const handleLogOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("User wylogowany");
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
   };
 
   return (
@@ -29,6 +42,9 @@ const Navigation = () => {
           </li>
           <li className="header__nav-link" onClick={handleSignUp}>
             Sign up
+          </li>
+          <li className="header__nav-link" onClick={handleLogOut}>
+            Log out
           </li>
         </ul>
       </nav>
