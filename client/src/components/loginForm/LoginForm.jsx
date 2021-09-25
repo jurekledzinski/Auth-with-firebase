@@ -5,21 +5,34 @@ import "./LoginForm.scss";
 import { StoreContext } from "../../store/Store";
 import Modal from "../modal/Modal";
 
+import {
+  auth,
+  signInWithEmailAndPassword,
+} from "../../firebase/ConfigFirebase";
+
 const LoginForm = () => {
   const { isOpenModalSignIn, setIsOpenModalSignIn } = useContext(StoreContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmitFormLogin = (e) => {
     e.preventDefault();
     if (!email || !password) return;
 
-    const dataLogin = {
-      email,
-      password,
-    };
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(userCredential, " log in");
+        setIsOpenModalSignIn(false);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(error);
+        setErrorMessage(error.message);
+      });
 
-    console.log("Data login ", dataLogin);
     setEmail("");
     setPassword("");
   };
