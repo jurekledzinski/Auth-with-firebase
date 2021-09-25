@@ -1,3 +1,5 @@
+@use "../../scss-vars/mixins.scss" as *;
+
 .register {
   position: absolute;
   width: 500px;
@@ -9,6 +11,7 @@
   justify-content: center;
   align-items: center;
   transform: translate(-50%, -50%);
+  animation: load 1s ease forwards;
 
   &__title {
     color: #777;
@@ -70,3 +73,5 @@
     }
   }
 }
+
+@include animLoadLoggers();
