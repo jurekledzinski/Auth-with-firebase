@@ -15,6 +15,7 @@ const RegisterForm = () => {
   const { isOpenModalSignUp, setIsOpenModalSignUp } = useContext(StoreContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   console.log(auth);
   console.log(db);
@@ -23,23 +24,18 @@ const RegisterForm = () => {
     e.preventDefault();
     if (!email || !password) return;
 
-    const dataRegister = {
-      email,
-      password,
-    };
-
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log(userCredential);
-        // ...
+        setIsOpenModalSignUp(false);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(error);
-        // ..
+        setErrorMessage(error.message);
       });
 
     setEmail("");
