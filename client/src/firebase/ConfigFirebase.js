@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -16,4 +22,20 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
-export { auth, createUserWithEmailAndPassword, db };
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    console.log("User zalogowany", uid);
+    console.log(user);
+  } else {
+    console.log("User wylogowany", user);
+  }
+});
+
+export {
+  auth,
+  createUserWithEmailAndPassword,
+  db,
+  signOut,
+  signInWithEmailAndPassword,
+};
