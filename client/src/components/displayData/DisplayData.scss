@@ -7,12 +7,16 @@
   width: 100%;
   height: calc(100vh - 99px);
   margin-top: 50px;
-  background-color: green;
 }
 
 .display {
   width: 70%;
   min-height: 60vh;
+
+  &__title {
+    color: #555555;
+    text-align: center;
+  }
 
   &__card {
     position: relative;
@@ -52,7 +56,7 @@
     }
 
     &--active {
-      background-color: #007bff;
+      background-color: #ddd;
       color: white;
     }
 
