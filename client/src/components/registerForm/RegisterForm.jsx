@@ -9,16 +9,22 @@ import {
   auth,
   createUserWithEmailAndPassword,
   db,
+  doc,
+  setDoc,
 } from "../../firebase/ConfigFirebase";
 
 const RegisterForm = () => {
   const { isOpenModalSignUp, setIsOpenModalSignUp } = useContext(StoreContext);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  console.log(auth);
-  console.log(db);
+  const addBioToFireStore = async (userCredential) => {
+    await setDoc(doc(db, "bio", userCredential), {
+      name: name,
+    });
+  };
 
   const handleSubmitFormRegister = (e) => {
     e.preventDefault();
@@ -26,15 +32,10 @@ const RegisterForm = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(userCredential);
+        addBioToFireStore(userCredential.user.uid);
         setIsOpenModalSignUp(false);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
         setErrorMessage(error.message);
       });
 
@@ -72,7 +73,16 @@ const RegisterForm = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="register__button-submit">Sign in</button>
+          <div className="register__wrapper-input">
+            <label className="register__label">Bio:</label>
+            <input
+              type="text"
+              className="register__input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <button className="register__button-submit">Sign up</button>
 
           <button className="register__button-close" onClick={handleCloseModal}>
             <i className="fas fa-times"></i>
