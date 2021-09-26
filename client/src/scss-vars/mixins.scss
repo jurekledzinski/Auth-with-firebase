@@ -10,3 +10,19 @@
     }
   }
 }
+
+@mixin buttonForm {
+  width: 100%;
+  padding: 10px;
+  margin-top: 30px;
+  border: none;
+  outline: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  &:hover {
+    background-color: #0071ea;
+  }
+}
