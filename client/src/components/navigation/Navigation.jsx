@@ -14,6 +14,7 @@ const Navigation = () => {
     isOpenModalSignUp,
     setIsOpenModalSignUp,
     setIsOpenBookForm,
+    setIsOpenModalProfile,
   } = useContext(StoreContext);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -28,6 +29,10 @@ const Navigation = () => {
     setIsOpenBookForm(true);
   };
 
+  const handleOpenProfileUser = () => {
+    setIsOpenModalProfile(true);
+  };
+
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -38,8 +43,6 @@ const Navigation = () => {
       });
   };
 
-  console.log(isLogInUser === false, "isLogInUser nav");
-
   return (
     <header className="header">
       <nav className="header__nav">
@@ -49,9 +52,19 @@ const Navigation = () => {
               className={
                 isLogInUser && "header__nav-link header__nav-link--visible"
               }
+              onClick={handleOpenProfileUser}
+            >
+              Profile
+            </li>
+          ) : null}
+          {isLogInUser ? (
+            <li
+              className={
+                isLogInUser && "header__nav-link header__nav-link--visible"
+              }
               onClick={handleOpenCreateBookForm}
             >
-              Add proverb
+              Add book
             </li>
           ) : null}
           {!isLogInUser ? (
