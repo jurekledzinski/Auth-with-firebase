@@ -4,8 +4,11 @@ import {
   auth,
   collection,
   db,
-  getDocs,
+  doc,
+  getDoc,
+  query,
   onAuthStateChanged,
+  onSnapshot,
 } from "../firebase/ConfigFirebase";
 
 export const StoreContext = createContext(null);
@@ -17,34 +20,46 @@ const StoreProvider = ({ children }) => {
   const [isOpenModalSignIn, setIsOpenModalSignIn] = useState(false);
   const [isOpenModalSignUp, setIsOpenModalSignUp] = useState(false);
   const [isOpenBookForm, setIsOpenBookForm] = useState(false);
+  const [isOpenModalProfile, setIsOpenModalProfile] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const fetchDataBooks = async () => {
-    let arrData = [];
-    const querySnapshot = await getDocs(collection(db, "books"));
-
-    querySnapshot.forEach((doc) => {
-      const id = doc.id;
-      arrData = [...arrData, { ...doc.data(), id }];
-    });
-
-    setDataBooks(arrData);
+    const queryAll = query(collection(db, "books"));
+    onSnapshot(
+      queryAll,
+      (items) => {
+        let allBooksLiveUpdate = [];
+        items.forEach((doc) => {
+          const id = doc.id;
+          allBooksLiveUpdate = [...allBooksLiveUpdate, { ...doc.data(), id }];
+        });
+        setDataBooks(allBooksLiveUpdate);
+      },
+      (error) => {
+        setErrorMessage(error.message);
+      }
+    );
   };
 
-  console.log(isLogInUser);
+  const fetchUserBio = async (userId) => {
+    const docRef = doc(db, "bio", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setUserName(docSnap.data().name);
+    } else {
+      setErrorMessage("No such document!");
+    }
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsLogInUser(Boolean(user.email));
-        fetchDataBooks();
-
         const uid = user.uid;
-        console.log("User zalogowany", uid);
-        console.log(user, " user dane");
-
-        //   Pobieram dane books z firestore
+        setIsLogInUser(user.email);
+        fetchDataBooks();
+        fetchUserBio(uid);
       } else {
-        console.log("User wylogowany", user);
         setIsLogInUser(false);
         setDataBooks([]);
       }
@@ -62,6 +77,9 @@ const StoreProvider = ({ children }) => {
         setIsOpenModalSignIn,
         isOpenModalSignUp,
         setIsOpenModalSignUp,
+        isOpenModalProfile,
+        setIsOpenModalProfile,
+        userName,
       }}
     >
       {children}
