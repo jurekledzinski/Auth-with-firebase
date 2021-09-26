@@ -67,7 +67,7 @@ const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="login__button-signIn">Sign in</button>
+          <button className="login__button-submit">Sign in</button>
 
           <button className="login__button-close" onClick={handleCloseModal}>
             <i className="fas fa-times"></i>

@@ -10,8 +10,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #ddd;
   transform: translate(-50%, -50%);
-  animation: load 1s ease forwards;
+  animation: load 0.5s ease forwards;
+  z-index: 2;
 
   &__title {
     color: #777;
@@ -41,20 +43,8 @@
     text-indent: 10px;
   }
 
-  &__button-signIn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 30px;
-    border: none;
-    outline: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s ease;
-
-    &:hover {
-      background-color: #0071ea;
-    }
+  &__button-submit {
+    @include buttonForm();
   }
 
   &__button-close {
