@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import "./LoginForm.scss";
 
@@ -15,6 +15,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const idTimeOut = useRef(null);
 
   const handleSubmitFormLogin = (e) => {
     e.preventDefault();
@@ -22,14 +23,9 @@ const LoginForm = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(userCredential, " log in");
         setIsOpenModalSignIn(false);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
         setErrorMessage(error.message);
       });
 
@@ -44,13 +40,19 @@ const LoginForm = () => {
     setPassword("");
   };
 
+  useEffect(() => {
+    errorMessage && setTimeout(() => setErrorMessage(""), 1000);
+    return () => clearTimeout(idTimeOut);
+  }, [errorMessage]);
+
   return (
     <Modal isOpenModal={isOpenModalSignIn}>
       <div className="login">
         <h2 className="login__title">Sing In</h2>
+        {errorMessage && <p className="login__message">{errorMessage}</p>}
         <form className="login__form" onSubmit={handleSubmitFormLogin}>
           <div className="login__wrapper-input">
-            <label className="login__label">Name:</label>
+            <label className="login__label">Email:</label>
             <input
               type="text"
               className="login__input"
