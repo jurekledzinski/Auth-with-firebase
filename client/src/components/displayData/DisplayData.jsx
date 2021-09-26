@@ -16,7 +16,7 @@ const DisplayData = () => {
   return (
     <main className="main">
       <section className="display">
-        {dataBooks.length > 0 ? (
+        {dataBooks !== null && dataBooks.length > 0 ? (
           dataBooks.map((item, index) => (
             <div className="display__card" key={item.id}>
               <button
@@ -41,7 +41,15 @@ const DisplayData = () => {
             </div>
           ))
         ) : (
-          <h2 className="display__title">Log in to see content</h2>
+          <h2
+            className={
+              dataBooks === null
+                ? "display__title"
+                : "display__title display__title--visible"
+            }
+          >
+            Log in to see content
+          </h2>
         )}
       </section>
     </main>

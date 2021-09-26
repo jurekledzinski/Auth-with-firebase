@@ -8,18 +8,24 @@ import { auth, signOut } from "../../firebase/ConfigFirebase";
 
 const Navigation = () => {
   const {
+    isLogInUser,
     isOpenModalSignIn,
     setIsOpenModalSignIn,
     isOpenModalSignUp,
     setIsOpenModalSignUp,
+    setIsOpenBookForm,
   } = useContext(StoreContext);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSignIn = () => {
+  const handleOpenSignInForm = () => {
     if (!isOpenModalSignUp) setIsOpenModalSignIn(true);
   };
-  const handleSignUp = () => {
+  const handleOpenSignUpForm = () => {
     if (!isOpenModalSignIn) setIsOpenModalSignUp(true);
+  };
+
+  const handleOpenCreateBookForm = () => {
+    setIsOpenBookForm(true);
   };
 
   const handleLogOut = () => {
@@ -32,20 +38,56 @@ const Navigation = () => {
       });
   };
 
+  console.log(isLogInUser === false, "isLogInUser nav");
+
   return (
     <header className="header">
       <nav className="header__nav">
         <ul className="header__nav-menu">
-          <li className="header__nav-link">Home</li>
-          <li className="header__nav-link" onClick={handleSignIn}>
-            Sign in
-          </li>
-          <li className="header__nav-link" onClick={handleSignUp}>
-            Sign up
-          </li>
-          <li className="header__nav-link" onClick={handleLogOut}>
-            Log out
-          </li>
+          {isLogInUser ? (
+            <li
+              className={
+                isLogInUser && "header__nav-link header__nav-link--visible"
+              }
+              onClick={handleOpenCreateBookForm}
+            >
+              Add proverb
+            </li>
+          ) : null}
+          {!isLogInUser ? (
+            <li
+              className={
+                isLogInUser === null
+                  ? "header__nav-link"
+                  : "header__nav-link header__nav-link--visible"
+              }
+              onClick={handleOpenSignInForm}
+            >
+              Sign in
+            </li>
+          ) : null}
+          {!isLogInUser ? (
+            <li
+              className={
+                isLogInUser === null
+                  ? "header__nav-link"
+                  : "header__nav-link header__nav-link--visible"
+              }
+              onClick={handleOpenSignUpForm}
+            >
+              Sign up
+            </li>
+          ) : null}
+          {isLogInUser ? (
+            <li
+              className={
+                isLogInUser && "header__nav-link header__nav-link--visible"
+              }
+              onClick={handleLogOut}
+            >
+              Log out
+            </li>
+          ) : null}
         </ul>
       </nav>
     </header>

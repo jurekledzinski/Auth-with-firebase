@@ -10,17 +10,22 @@
 
   &__nav-menu {
     display: flex;
-    justify-content: space-around;
-    width: 35%;
+    justify-content: space-evenly;
+    min-width: 35%;
     list-style-type: none;
   }
 
   &__nav-link {
-    width: 25%;
+    display: none;
+    min-width: 25%;
     padding: 15px 0;
     color: #f6f6d6;
     text-align: center;
     cursor: pointer;
+
+    &--visible {
+      display: block;
+    }
 
     &:hover {
       color: white;
