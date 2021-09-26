@@ -5,18 +5,31 @@ import "./CreateBookForm.scss";
 import { StoreContext } from "../../store/Store";
 import Modal from "../modal/Modal";
 
-import {} from "../../firebase/ConfigFirebase";
+import { addDoc, collection, db } from "../../firebase/ConfigFirebase";
 
 const CreateBookForm = () => {
   const { isOpenBookForm, setIsOpenBookForm } = useContext(StoreContext);
-
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmitFormLogin = (e) => {
+  const handleCreateBook = async (e) => {
     e.preventDefault();
     if (!title || !author) return;
+
+    const book = {
+      title,
+      author,
+    };
+
+    try {
+      await addDoc(collection(db, "books"), book);
+      setTitle("");
+      setAuthor("");
+      setIsOpenBookForm(false);
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
 
     setTitle("");
     setAuthor("");
@@ -32,8 +45,8 @@ const CreateBookForm = () => {
   return (
     <Modal isOpenModal={isOpenBookForm}>
       <div className="book-form">
-        <h2 className="book-form__title">Create books</h2>
-        <form className="book-form__form" onSubmit={handleSubmitFormLogin}>
+        <h2 className="book-form__title">Create book</h2>
+        <form className="book-form__form" onSubmit={handleCreateBook}>
           <div className="book-form__wrapper-input">
             <label className="book-form__label">Title:</label>
             <input
@@ -52,9 +65,12 @@ const CreateBookForm = () => {
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
-          <button className="login__button-signIn">Sign in</button>
+          <button className="book-form__button-submit">Create book</button>
 
-          <button className="login__button-close" onClick={handleCloseModal}>
+          <button
+            className="book-form__button-close"
+            onClick={handleCloseModal}
+          >
             <i className="fas fa-times"></i>
           </button>
         </form>

@@ -1,0 +1,67 @@
+@use "../../scss-vars/mixins.scss" as *;
+
+.book-form {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ddd;
+  transform: translate(-50%, -50%);
+  animation: load 0.5s ease forwards;
+  z-index: 2;
+
+  &__title {
+    color: #777;
+  }
+
+  &__form {
+    position: relative;
+    width: 80%;
+  }
+
+  &__wrapper-input {
+    margin: 10px 0;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555555;
+    font-weight: 300;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #ddd;
+    outline: none;
+    text-indent: 10px;
+  }
+
+  &__button-submit {
+    @include buttonForm();
+  }
+
+  &__button-close {
+    position: absolute;
+    top: -50px;
+    right: 0px;
+    padding: 5px 7px;
+    border: 1px solid #ddd;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+      color: white;
+      background-color: #007bff;
+    }
+  }
+}
+
+@include animLoadLoggers();
