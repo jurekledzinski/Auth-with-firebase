@@ -1,12 +1,22 @@
 import { initializeApp } from "firebase/app";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
+  getAuth,
   onAuthStateChanged,
   signOut,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  query,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4MT_hWy1K8YLmwgbrVd0vO-YLK9Zj7WQ",
@@ -22,20 +32,18 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const uid = user.uid;
-    console.log("User zalogowany", uid);
-    console.log(user);
-  } else {
-    console.log("User wylogowany", user);
-  }
-});
-
 export {
+  addDoc,
   auth,
   createUserWithEmailAndPassword,
+  collection,
   db,
+  doc,
+  getDoc,
+  query,
+  onAuthStateChanged,
+  onSnapshot,
+  setDoc,
   signOut,
   signInWithEmailAndPassword,
 };
